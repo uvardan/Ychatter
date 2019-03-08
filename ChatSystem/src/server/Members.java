@@ -5,11 +5,14 @@ public class Members {
 	String name;
 	String IP;
 	int port;
+	int TcpPort;
 	
-	public Members(String name, String IP,int port ) {
+	
+	public Members(String name, String IP,int port, int TcpPort ) {
 		this.name=name;
 		this.IP=IP;
 		this.port=port;
+		this.TcpPort=TcpPort;
 	}
 
 	public Members() {
@@ -39,5 +42,14 @@ public class Members {
 	public void setPort(int port) {
 		this.port = port;
 	}
+	
+	public int getTcpPort() {
+		return TcpPort;
+	}
+
+	public void setTcpPort(int tCPPort) {
+		TcpPort = tCPPort;
+	}
+
 
 }
