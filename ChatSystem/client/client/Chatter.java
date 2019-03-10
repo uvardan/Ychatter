@@ -84,7 +84,6 @@ public class Chatter {
 				udpListener();
 
 			}
-			exit();
 		}
 
 		catch (UnknownHostException u) {
@@ -125,7 +124,7 @@ public class Chatter {
 		while (true) {
 			while (!sc.hasNextLine()) {
 
-				String exit = "Exit \n";
+				String exit = "EXIT \n";
 				tcpListener(exit);
 				
 

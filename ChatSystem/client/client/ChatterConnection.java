@@ -65,8 +65,8 @@ public class ChatterConnection extends Thread {
 						udp_in_message=udp_in_message.replaceAll("\n", "");
 						if(udp_in_message.equals(Chatter.ScreenName)) {
 							System.out.println("Good Bye");
-							socket.close();
 							System.exit(0);
+							
 							
 						}else {
 						int port= names.get(udp_in_message);

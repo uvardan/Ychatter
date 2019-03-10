@@ -12,11 +12,10 @@ public class MemD {
 	ServerConnect sc;
 	ServerSocket serverSocket;
 	Socket socket;
-	DatagramSocket udp;
+	public DatagramSocket udp;
 	private static int port;
-	static List<Members> memberList;
 	public static Members member;
-
+	static List<Members> memberList;
 	public static String ScreenName = null;
 	OutputStream os = null;
 	String tcp_in_message = null;
@@ -25,9 +24,8 @@ public class MemD {
 	byte[] sendbuffer = new byte[1024];
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		port = Integer.parseInt(args[0]);
-		System.out.println("Attempting to connect to port: " + port);
+		System.out.println("Connecting to port: " + port);
 		new MemD();
 
 	}
@@ -38,6 +36,7 @@ public class MemD {
 
 		try {
 			serverSocket = new ServerSocket(port);
+			System.out.println("Connected!");
 			while (true) {
 
 				socket = serverSocket.accept();

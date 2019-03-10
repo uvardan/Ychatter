@@ -12,7 +12,6 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.HashMap;
 import java.util.List;
 
 public class ServerConnect extends Thread {
@@ -23,13 +22,10 @@ public class ServerConnect extends Thread {
 	Members member;
 	boolean isrunning = true;
 	List<Members> memberList;
-	public static String ScreenName = null;
+	public String ScreenName;
 	byte[] sendbuffer = new byte[1024];
-	String tcp_in_message = null;
+	String tcp_in_message;
 	String tcp_out_message;
-	String udp_out_message = null;
-	public static HashMap<Integer, String> names;
-	public HashMap<Integer, String> records;
 
 	public ServerConnect(Socket socket, DatagramSocket udp, MemD server) {
 		super("Super");
@@ -50,10 +46,10 @@ public class ServerConnect extends Thread {
 				InputStreamReader input_stream_reader = new InputStreamReader(is);
 				BufferedReader buffer_reader = new BufferedReader(input_stream_reader);
 				tcp_in_message = buffer_reader.readLine();
-				//	tcp_in_message = din.readLine();					
+				
 					if (tcp_in_message != null) {
-						if (tcp_in_message.startsWith("EXIT")) {
-							tcp_out_message = "EXIT " + ScreenName;
+						if ((tcp_in_message.startsWith("EXIT"))|| tcp_in_message.startsWith("Exit")) {
+							tcp_out_message = "EXIT " + member.name+"\n";
 							sendAllMembers(tcp_out_message);
 							memberList.remove(member);
 							isrunning=false;
@@ -75,13 +71,11 @@ public class ServerConnect extends Thread {
 									rep = true;
 									isrunning = false;
 
-									// check if member exist
 								}
 							}
 							if (rep == false) {
 								memberList.add(member);
 								tcp_out_message = TcpMessage(memberList);
-								// tcp_out_message=TCPMessage(records);
 								tcpWriter(tcp_out_message);
 								tcp_in_message = tcp_in_message.replaceAll("HELO ", "JOIN ");
 								sendAllMembers(tcp_in_message);
@@ -89,7 +83,16 @@ public class ServerConnect extends Thread {
 							}
 						}
 					}
-				}
+					else {
+						tcp_out_message = "EXIT " + member.name+"\n";
+						sendAllMembers(tcp_out_message);
+						memberList.remove(member);
+						isrunning=false;
+						
+					}
+			
+			}
+			
 			
 
 		} catch (IOException e) {
@@ -107,6 +110,7 @@ public class ServerConnect extends Thread {
 			BufferedWriter buffer_writer = new BufferedWriter(output_stream_writer);
 			buffer_writer.write(message);
 			buffer_writer.flush();
+		
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -146,13 +150,12 @@ public class ServerConnect extends Thread {
 				DatagramPacket send = new DatagramPacket(sendbuffer, sendbuffer.length, IP, port);
 				try {
 					udp.send(send);
+					
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 
 			} catch (UnknownHostException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
